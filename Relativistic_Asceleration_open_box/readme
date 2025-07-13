@@ -1,1 +1,57 @@
+This MATLAB function simulates the time evolution of a monoenergetic low-mass particle population injected into a thermal bath of high-mass background particles. It models elastic binary collisions and tracks the injected particle distribution over time, allowing analysis of thermalization and kinetic behavior in a two-component system.
 
+
+📥 Inputs
+	•	f_param — Scaling factor for the collision frequency (dimensionless)
+	•	num_par_inj — Number of low-mass particles injected
+	•	max_time — Duration of the simulation (in simulation time units)
+	•	cs_p — Power-law exponent controlling energy dependence of the cross-section
+	•	step_inc — Time interval between saved snapshots (sampling resolution)
+
+⸻
+
+📤 Outputs
+	•	data — A struct containing diagnostics at each time step:
+	•	f_sim: Normalized histogram of energy distribution
+	•	bins: Logarithmic bin centers used for histograms
+	•	kin_energy: Mean kinetic energy of the injected particles
+	•	time: Timestamp for each diagnostic snapshot
+	•	str — A filename string describing simulation parameters, used for saving results
+
+⸻
+
+📁 Dependencies
+
+Ensure the following components are available in your project:
+	•	Folder Basic functions/ containing:
+	•	randdir_matrix.m — generates isotropic random directions
+	•	collision.m — handles elastic binary collisions
+	•	frequancy.m — calculates collision rate based on velocity
+	•	histlog.m — logarithmic binning for energy histograms
+	•	Folder saves_one_type/ containing:
+	•	Precomputed .mat files named according to particle mass and energy, with variables named Energy_array for:
+(can use func_One_type_prep_asc.m)
+	•	Background heavy particles (e.g., mass = 1e6, energy = m/2)
+	•	Injected low-mass particles (e.g., mass = 1, energy = m/2)
+
+⸻
+
+🧪 Example Usage
+
+% Simulation parameters
+f_param     = 1e1;    % collision frequency scaling
+num_par_inj = 1e6;    % number of low-mass particles
+max_time    = 1e4;    % total simulation time
+cs_p        = 0;      % cross-section exponent (Energy^cs_p)
+step_inc    = 1.0;    % time between snapshots
+
+% Run simulation
+[data, str] = func_asc_single_injection_Mat_TS(f_param, num_par_inj, max_time, cs_p, step_inc);
+
+⸻
+
+💾 Output File
+
+Results are saved automatically in the folder saves_v4/ as a .mat file, named based on the simulation parameters, e.g.:
+
+saves_v4/Single_injection_number_of_particles_injected_1.0e+06_cs_power_0_maximum_time_steps_1.0e+04_relative_frequancy_parameter_1.0e+01_step_inc_1.00.mat
