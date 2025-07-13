@@ -1,1 +1,84 @@
+Relativistic Monte Carlo Simulation for Two-Mass Particle Collisions
+
+This script runs a relativistic kinetic simulation of binary collisions between two particle species with different rest masses but identical bulk Lorentz boost velocities. It models energy exchange and thermalization in a mixed plasma using Monte Carlo methods.
+
+⚙️ Physical Model Summary
+	•	Each particle species starts with the same bulk velocity but different rest masses.
+	•	Initial total energy is computed using the Lorentz factor γ = 1 / sqrt(1 - v^2/c^2).
+	•	Binary collisions are randomly selected and tested probabilistically against a maximum frequency (f_max).
+	•	Energy and momentum conservation are enforced using relativistic kinematics via RelCol.
+	•	The system evolves until the desired max_time, and data is sampled at regular intervals.
+	•	Distributions are compared to the relativistic Maxwell–Jüttner distribution.
+
+
+📥 Inputs
+	•	ic1, ic2 — Structs defining initial properties of the two particle species:
+	•	.m  — rest mass of the particles
+	•	.gb — initial bulk velocity in units of c
+	•	N — Number of particles per species (total particle number is 2N)
+	•	max_time — Final simulation time (arbitrary units; the system evolves until t >= max_time)
+	•	fparam — Rescaling parameter for collision frequency; controls how fast collisions happen
+
+⸻
+
+📤 Outputs
+	•	data — Struct containing time-series simulation results:
+	•	f_sim_1, f_sim_2: histograms of kinetic energy for each species
+	•	coll_num: cumulative number of accepted collisions
+	•	coll_num_Mm: number of cross-species (mass-mixed) collisions
+	•	bins: logarithmic bin centers for energy histograms
+	•	Teo1, Teo2: Maxwell–Jüttner theoretical distributions for comparison
+	•	time: simulation time at each sample step
+	•	ic1, ic2 — Updated structs including derived quantities:
+	•	.b, .g, .e, .ke: velocity, Lorentz factor, energy, and kinetic energy per particle
+
+⸻
+
+
+
+
+📁 Output File
+
+The results are saved as a .mat file in the saves/ directory with a name summarizing the parameters, e.g.:
+ "saves/Mass_ratio_1836_gb_1e-03_f_param_1e+01_Nop_1000000_max_time_10000.mat"
+
+% Example Usage in MATLAB
+
+
+% Set common initial bulk velocity (dimensionless, v/c)
+gb = 1e-3;
+
+% Collision frequency scaling
+fparam = 1e1;
+
+% Define species 1 (e.g., electrons)
+ic1.m = 1;      % rest mass
+ic1.gb = gb;    % same initial velocity
+
+% Define species 2 (e.g., protons)
+ic2.m = 1836;   % rest mass ratio m_p / m_e
+ic2.gb = gb;    % same initial velocity
+
+% Simulation parameters
+N = 1e6;           % particles per species
+max_time = 1e4;    % simulation duration
+
+% Run the simulation
+[data, ic1, ic2] = par_col(ic1, ic2, N, max_time, fparam);
+
+
+📊 Output Details
+
+Each sample in data contains:
+	•	f_sim_1(idx,:), f_sim_2(idx,:): normalized histograms of kinetic energy
+	•	bins: logarithmic bin centers
+	•	Teo1, Teo2: theoretical prediction at that bin resolution
+	•	coll_num(idx): total number of collisions
+	•	coll_num_Mm(idx): number of cross-species collisions
+	•	time(idx): corresponding simulation time
+
+🧠 Useful Notes
+	•	You can plot f_sim_1 and f_sim_2 against Teo1 and Teo2 to assess thermalization.
+	•	Adjusting fparam allows tuning the timescale of equilibration without changing physics.
+	•	RelCol.m, collision_freq.m, and randdir_matrix.m must be present in the Basic functions/ directory.
 
