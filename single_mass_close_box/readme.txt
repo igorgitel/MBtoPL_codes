@@ -31,7 +31,7 @@ This script performs a relativistic Monte Carlo simulation of colliding identica
 	•	Samples kinetic energy and momentum (μ) distributions at regular intervals
 	•	Compares simulation histograms with the Maxwell–Jüttner theoretical distribution
 
-📦 Output:
+📦 Output note:
 	•	Simulation results are saved in a .mat file in the saves/ directory, with a filename summarizing parameters
 
 ⸻
