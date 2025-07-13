@@ -1,1 +1,55 @@
+This function simulates the real-time energy evolution of a population of injected low-mass particles as they undergo elastic collisions with a background of heavy, stationary particles. The background is pre-initialized and loaded from saved simulations. The injected population thermalizes over time due to binary collisions.
+
+⸻
+
+🧠 Physical Model Summary
+	•	A set of low-mass particles is injected into a medium of high-mass background particles.
+	•	Each particle has a fixed initial energy.
+	•	The background is initialized separately and stored in .mat files in the saves_one_type/ directory.
+	•	The system evolves via binary elastic collisions.
+	•	The energy distribution of the injected particles is tracked over time and compared to the Maxwell–Boltzmann distribution.
+	•	Directional vectors are randomly regenerated using a unit vector matrix (randdir_matrix).
+🔧 Function Signature
+
+📥 Inputs
+	•	f_param — Collision frequency scaling factor (dimensionless).
+	•	num_par_inj — Number of low-mass particles to inject.
+	•	max_time — Simulation time duration (loop runs until t ≥ max_time).
+	•	cs_p — Power-law exponent for the cross-section dependence on velocity.
+	•	step_inc — Time interval between diagnostic snapshots.
+
+⸻
+
+📤 Outputs
+	•	data — A structure with time-evolving diagnostics:
+	•	data(idx).f_sim: Normalized histogram of particle energy distribution.
+	•	data(idx).bins: Logarithmic bin centers.
+	•	data(idx).kin_energy: Mean kinetic energy of the injected particles.
+	•	data(idx).time: Time of each saved snapshot.
+	•	str — Descriptive string encoding simulation parameters (used for filenames).
+
+📁 Dependencies
+	•	Basic functions/ folder must contain:
+	•	collision.m
+	•	frequancy.m
+	•	randdir_matrix.m
+	•	histlog.m
+	•	Precomputed .mat files in saves_one_type/ containing:
+	•	Background particle energies (mass = 1e6)
+	•	Injected particle energies (mass = 1)
+
+% Example Usage in MATLAB
+
+% Define parameters
+f_param     = 1e1;     % scaling factor for collision frequency
+num_par_inj = 1e6;     % number of low-mass particles injected
+max_time    = 1e4;     % simulation end time
+cs_p        = 0;       % cross-section exponent
+step_inc    = 1.0;     % sampling interval
+
+% Run simulation
+[data, str] = Real_time_func_Evolution_single_injection_dir_matrix(f_param, num_par_inj, max_time, cs_p, step_inc);
+
+The simulation saves a .mat file to saves_v4/ with a filename like:
+Real_time_Single_injection_number_of_particles_injected_1.0e+06_cs_power_0_maximum_time_steps_1.0e+04_relative_frequancy_parameter_1.0e+01_step_inc_1.00.mat
 
