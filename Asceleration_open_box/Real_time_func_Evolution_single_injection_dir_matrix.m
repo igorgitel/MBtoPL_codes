@@ -51,7 +51,6 @@ data = struct('f_sim', cell(1, max_time),...
 MBDF=@(e,T) 2/(sqrt(pi*T^3)).*exp(-e/T).*sqrt(e);
 %% Collision loop
 tic
-alredy_reduced=false;
 while t<max_time
     if t>=step
         data(idx).kin_energy=mean(Energy_low_mass);
@@ -73,15 +72,6 @@ while t<max_time
         step=step+step_inc;
         idx=idx+1;
         N=num_of_par;
-    end
-    % reduction after N=350 
-    if  alredy_reduced==false && t>350
-        N_new=10^4;
-        indx=randi([1 N],1,N_new);
-        Energy_low_mass=Energy_low_mass(indx);
-        N=N_new;
-        num_of_par=N_new
-        alredy_reduced=true;
     end
     trys=trys+1;
 
