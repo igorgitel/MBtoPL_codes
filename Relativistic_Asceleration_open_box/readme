@@ -1,4 +1,4 @@
-This MATLAB function simulates the time evolution of a monoenergetic low-mass particle population injected into a thermal bath of high-mass background particles. It models elastic binary collisions and tracks the injected particle distribution over time, allowing analysis of thermalization and kinetic behavior in a two-component system.
+This MATLAB function simulates the time evolution of a low-mass particle population injected into a thermal bath of high-mass background particles. It models elastic binary collisions and tracks the injected particle distribution over time, allowing analysis of thermalization and kinetic behavior in a two-component system.
 
 
 📥 Inputs
