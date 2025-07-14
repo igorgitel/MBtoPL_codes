@@ -5,57 +5,69 @@ This MATLAB function simulates the time evolution of a low-mass particle populat
 	•	num_par_inj — Number of low-mass particles injected
 	•	max_time — Duration of the simulation (in simulation time units)
 	•	icb — Struct describing the background particle population:
-		•	icb.m — rest mass
-		•	icb.e — total energy
-		•	icb.N — number of background particles
-		•	icb.gb — initial bulk velocity (used in saved file lookup)
+	•	icb.m — Rest mass
+	•	icb.e — Total energy (should be set to γ × m)
+	•	icb.N — Number of background particles
+	•	icb.gb — Initial bulk velocity (used in saved file lookup)
 	•	gb — Initial boost (velocity) of the injected particle population
 	•	folder — Path to directory where simulation outputs will be saved
-
-⸻
-
 ⚠️ Note on cs_p:
 Although cs_p (the power-law exponent for energy-dependent cross-section) is used in other functions, it is hard-coded inside this function as cs_p = 0.
 To change the cross-section behavior, you must edit the line directly in the function:
 cs_p = 0;  % Change this manually to e.g. cs_p = 1.5
 
 📤 Outputs
-	•	data — A struct containing diagnostics at each time step:
-	•	f_sim: Normalized histogram of energy distribution
-	•	bins: Logarithmic bin centers used for histograms
-	•	kin_energy: Mean kinetic energy of the injected particles
-	•	time: Timestamp for each diagnostic snapshot
-	•	str — A filename string describing simulation parameters, used for saving results
+	•	data — Struct containing diagnostics at each time step:
+		•	f_sim — Normalized histogram of energy distribution
+		•	bins — Logarithmic bin centers
+		•	kin_energy — Mean kinetic energy of injected particles
+		•	time — Timestamp of each snapshot
+	•	En — Final energy array of injected particles
 
 ⸻
 
-📁 Dependencies
-
-Ensure the following components are available in your project:
-	•	Folder Basic functions/ containing:
-	•	randdir_matrix.m — generates isotropic random directions
-	•	collision.m — handles elastic binary collisions
-	•	frequancy.m — calculates collision rate based on velocity
-	•	histlog.m — logarithmic binning for energy histograms
-	•	Folder saves_one_type/ containing:
-	•	Precomputed .mat files named according to particle mass and energy, with variables named Energy_array for:
-(can use func_One_type_prep.m from single_mass_close_box)
-	•	Background heavy particles (e.g., mass = 1e6, energy = m/2)
-	•	Injected low-mass particles (e.g., mass = 1, energy = m/2)
+Ensure the following components are present:
+	•	Folder Basic functions/:
+	•	randdir_matrix.m — Generates isotropic random directions
+	•	collision.m — Handles elastic binary collisions
+	•	frequancy.m — Computes collision frequency
+	•	histlog.m — Bins energies on a log scale
+	•	Folder saves_one_type/:
+	•	Must contain a .mat file produced by func_One_type_prep:
+	•	For background particles only (e.g., mass = 1e6, energy = γ × m, with γ from icb.gb)
 
 ⸻
+🧪 Example Usage with Background + Injected MB Initialization
 
-🧪 Example Usage
+% 🟡 Simulation parameters
+f_param     = 1e1;     % scaling factor for collision frequency
+num_par_inj = 1e6;     % number of injected particles
+max_time    = 1e4;     % duration of simulation
+step_inc    = 1.0;     % time resolution for saving snapshots
 
-% Simulation parameters
-f_param     = 1e1;    % collision frequency scaling
-num_par_inj = 1e6;    % number of low-mass particles
-max_time    = 1e4;    % total simulation time
-cs_p        = 0;      % cross-section exponent (Energy^cs_p)
-step_inc    = 1.0;    % time between snapshots
+% 🧊 STEP 1: Prepare background and save
+icb.m  = 1e6;
+icb.N  = 1e6;
+icb.gb = 1e-3;
+save_folder = 'saves1';
 
-% Run simulation
-[data, str] = func_asc_single_injection_Mat_TS(f_param, num_par_inj, max_time, cs_p, step_inc);
+[Enb, ~, icb] = func_One_type_prep(icb.m, icb.gb, icb.N, save_folder);
+
+% 🔥 STEP 2: Run the simulation — injection is monoenergetic inside the function
+f_param     = 1e1;
+num_par_inj = 1e6;
+max_time    = 1e4;
+inj_gb      = 0.1;      % injected particle boost (delta function)
+folder      = 'saves_v4';
+
+[data, En] = func_asc_single_injection_Mat_TS(...
+    f_param, ...
+    num_par_inj, ...
+    max_time, ...
+    icb, ...
+    inj_gb, ...
+    folder ...
+);
 
 ⸻
 
