@@ -162,12 +162,12 @@ while t<max_time
     end
 end
 %%
-figure
-histogram(erff,10.^(-16:0.1:1));
-ax=gca;
-ax.XScale='log';
-ax.YScale='log';
-title(num2str(mean(erff),'%1.1e'))
+% figure
+% histogram(erff,10.^(-16:0.1:1));
+% ax=gca;
+% ax.XScale='log';
+% ax.YScale='log';
+% title(num2str(mean(erff),'%1.1e'))
 %%
 str=['init_gb_' num2str(ic.gb,'%1.0e') ...
     '_par_num_' num2str(numofpar_initially,'%1.0e') ...
