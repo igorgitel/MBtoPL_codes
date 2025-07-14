@@ -1,1 +1,41 @@
+# `TwotypeColision.m`
 
+This MATLAB function simulates the **Ultra-relativistic energy evolution of a particles (Type 1)** interacting with a background medium (Type 2) via elastic collisions. It models how the beam energy distribution changes over time due to random scattering off background particles with fixed velocity magnitude but randomized direction.
+
+---
+
+## ⚙️ Function Signature
+
+s = TwotypeColision(N, ic, edges, time_s)
+
+
+📥 Inputs
+	•	N — Number of Type 1 (tracked) particles
+	•	ic — Struct with initial conditions:
+  	•	ic.p01 — Initial 3-momentum magnitude used to generate the population (=Energy as an ultra relativistic limit.) 
+  	•	ic.beta2 — Magnitude of background particle velocity (in units of c)
+	•	edges — Struct for histogram binning:
+	  •	  edges.type1 — Logarithmic bin edges for the energy histogram
+	•	time_s — Struct with simulation time configuration:
+	  •	  time_s.stepinc — Time interval between histogram snapshots
+
+⸻
+
+📤 Output
+	•	s — Struct array storing simulation diagnostics at each snapshot:
+  	•	s(idx).EnergyBE1 — Histogram bin centers
+  	•	s(idx).DFE1 — Normalized energy distribution of Type 1 particles
+  	•	s(idx).coldone — Number of collisions completed so far
+  	•	s(idx).Energ_mean — Mean energy of Type 1 particles at this step
+  	•	s(idx).time — Simulation time at this step
+
+⸻
+
+📁 Dependencies
+
+This function requires the following helper scripts in your MATLAB path:
+	•	ChooseRandomRelV.m — Initializes the relativistic particle distribution from ic.p01
+	•	collision_freq.m — Computes the collision frequency between two particles
+	•	Inf_Rel_Col.m — Solves the relativistic collision kinematics
+	•	randdir.m — Generates a random isotropic unit vector
+	•	histlog.m — Computes logarithmic histograms for energy binning
