@@ -39,3 +39,24 @@ This function requires the following helper scripts in your MATLAB path:
 	•	Inf_Rel_Col.m — Solves the relativistic collision kinematics
 	•	randdir.m — Generates a random isotropic unit vector
 	•	histlog.m — Computes logarithmic histograms for energy binning
+
+% 🧪 Example Usage: TwotypeColision.m
+
+% Number of Type 1 particles to simulate
+N = 1e5;
+
+% Initial 3-momentum magnitude of Type 1 particles
+p0 = 100;x
+
+% Define input struct
+ic.p01   = p0;      % Magnitude of 3-momentum (used to sample initial energy)
+ic.beta2 = 0.1;     % Background scatterer velocity (v/c)
+
+% Define histogram bin edges for energy distribution (log-scale)
+edges.type1 = 10.^(-2:0.1:3);  % Bins from 1e-2 to 1e3
+
+% Time configuration
+time_s.stepinc = 1.0;  % Time between output snapshots
+
+% Run simulation
+s = TwotypeColision(N, ic, edges, time_s);
