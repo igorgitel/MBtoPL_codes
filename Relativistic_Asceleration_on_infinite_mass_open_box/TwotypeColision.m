@@ -9,7 +9,7 @@ time=0;
 f_max=0;
 idx=0;
 maxplotnum=5e3;
-Energy_mean=ic.E1;
+Energy_mean=ic.p01;
 temp1=0;
 s=struct('EnergyBE1',cell([1 maxplotnum]),...
     'DFE1',cell([1 maxplotnum]),...
