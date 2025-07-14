@@ -1,1 +1,119 @@
+## 🧠 Algorithm Overview: `SPI_RED_cascade.m`
 
+This function simulates a **single injection** of monoenergetic particles into a thermal background. These injected particles interact via binary collisions with background particles. Over time, energy spreads from the initially injected population to background particles — forming a **cascade-like redistribution**.
+
+There is **no repeated injection**; instead, the number of energized (active) particles grows internally through collisions. A reduction mechanism limits the total number of tracked particles for performance.
+
+---
+
+### 🔁 Step-by-Step Algorithm Sketch
+🔹 1. Load background energy distribution
+- Load from .mat file (contains ‘Energy_array’)
+- Initialize icb (background mass, gamma-beta, energy, etc.)
+
+🔹 2. Compute background temperature (T)
+- Solve inverse MJ relation (via Bessel functions)
+
+🔹 3. Inject initial particles
+- Inject a fixed number (numofpar) with monoenergetic distribution
+- Total energy set by γβ = ic.gb
+- This is a single injection at t = 0
+
+🔹 4. Initialize simulation
+- t = 0, step = step_inc
+- Allocate direction matrix
+- Initialize diagnostics: f_max, coll_num, idx = 1
+
+🔁 Main Loop: While t < max_time
+      ▸ a. Select two particles
+          - One from active/injected set
+          - One from fixed background pool
+      
+      ▸ b. Assign isotropic directions to both
+      
+      ▸ c. Compute collision frequency
+          - f_now = f_param × collision_freq(p1, e1, p2, e2)
+          - Update f_max
+      
+      ▸ d. Advance simulation time
+          - Δt = 1 / (N_active × f_max)
+          - t += Δt
+      
+      ▸ e. Perform collision (with probability f_now / f_max)
+          - Update energy of injected particle using `collision()`
+          - add the background particle.
+      
+      ▸ f. Save diagnostics if t > step
+          - Save energy histogram, mean KE, confidence bands
+          - Save collision-per-particle rate
+          - Regenerate direction matrix
+          - step += step_inc
+      
+      ▸ g. (Optional) Reduce particle number
+          - If number of active particles exceeds threshold:
+              - Randomly subsample to reduce population
+              - This limits memory use but preserves distribution
+---
+
+## ⚙️ Function Signature
+
+```matlab
+[data, str, ic, icb] = SPI_RED_cascade(ic, icb, maxnumofpar, numofpar, max_time, folder)
+
+⸻
+
+📥 Inputs
+	•	ic — Struct defining the injected particles:
+  	•	ic.m — Rest mass of the injected particles
+  	•	ic.gb — Reduced momentum (γβ = p/m) of the injected particles
+	•	icb — Struct defining the background particles (Type 2):
+  	•	icb.m — Rest mass of background particles
+  	•	icb.gb — Reduced momentum (γβ = p/m)
+  	•	icb.N — Number of background particles
+  	•	icb.folder — Folder where the background .mat file is saved (must contain Energy_array)
+	•	maxnumofpar — Maximum number of injected particles allowed in the simulation
+	•	numofpar — Number of particles injected at each time step
+	•	max_time — Maximum simulation time
+	•	folder — Output folder where the result .mat file will be saved
+
+⸻
+
+📤 Outputs
+	•	data — Struct array containing simulation diagnostics over time:
+  	•	data(idx).f_sim — Normalized energy distribution of injected particles
+  	•	data(idx).bins — Energy bin centers
+  	•	data(idx).kin_energy — Mean kinetic energy
+  	•	data(idx).time — Simulation time at this snapshot
+  	•	data(idx).coll_num_pp — Number of collisions per particle
+  	•	data(idx).f_sim_50, f_sim_100 — Uncertainty ranges (from error histograms)
+	•	str — A string encoding key simulation parameters (used for filename)
+	•	ic, icb — Updated structs (may include derived fields such as e, ke, g)
+
+⸻
+
+📁 Dependencies
+
+This function depends on the following utility files (in Basic functions/):
+	•	collision.m — Relativistic binary collision solver
+	•	frequancy.m — Collision rate calculator
+	•	randdir_matrix.m — Isotropic direction generator
+	•	low_err_histlog.m — Histogram calculator with uncertainty bands
+
+It also requires:
+	•	A .mat file in icb.folder/ containing:
+	  •	Energy_array — Precomputed energy distribution for background particles
+
+You can use func_One_type_prep.m to generate this file.
+
+⸻
+
+🧪 Example Usage
+
+See run_example.m in this repository for a fully commented usage script.
+
+⸻
+
+💾 Output File
+
+The results will be saved as a .mat file in the specified folder, with a filename constructed from the key parameters:
+RD_saves_05/Constant_injection_f_param_1e+01_num_par_inj_1e+04_max_time_1e+04_Bgb_1e-04_gb_1e+00.mat
