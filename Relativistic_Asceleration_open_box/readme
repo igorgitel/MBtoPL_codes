@@ -1,14 +1,23 @@
 This MATLAB function simulates the time evolution of a low-mass particle population injected into a thermal bath of high-mass background particles. It models elastic binary collisions and tracks the injected particle distribution over time, allowing analysis of thermalization and kinetic behavior in a two-component system.
 
-
 📥 Inputs
 	•	f_param — Scaling factor for the collision frequency (dimensionless)
 	•	num_par_inj — Number of low-mass particles injected
 	•	max_time — Duration of the simulation (in simulation time units)
-	•	cs_p — Power-law exponent controlling energy dependence of the cross-section
-	•	step_inc — Time interval between saved snapshots (sampling resolution)
+	•	icb — Struct describing the background particle population:
+		•	icb.m — rest mass
+		•	icb.e — total energy
+		•	icb.N — number of background particles
+		•	icb.gb — initial bulk velocity (used in saved file lookup)
+	•	gb — Initial boost (velocity) of the injected particle population
+	•	folder — Path to directory where simulation outputs will be saved
 
 ⸻
+
+⚠️ Note on cs_p:
+Although cs_p (the power-law exponent for energy-dependent cross-section) is used in other functions, it is hard-coded inside this function as cs_p = 0.
+To change the cross-section behavior, you must edit the line directly in the function:
+cs_p = 0;  % Change this manually to e.g. cs_p = 1.5
 
 📤 Outputs
 	•	data — A struct containing diagnostics at each time step:
