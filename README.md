@@ -45,7 +45,3 @@ Simulates repeated energy injections into a closed system. Aimed at reproducing 
 
 Each folder contains a self-contained script or a named main function.
 Open Matlab and run witin the folder. Make sure all the files witin the folder are present.
-
----
-
-For questions, extensions, or collaborations, please reach out or open an issue.
