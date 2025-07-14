@@ -30,7 +30,7 @@ Ensure the following components are available in your project:
 	•	histlog.m — logarithmic binning for energy histograms
 	•	Folder saves_one_type/ containing:
 	•	Precomputed .mat files named according to particle mass and energy, with variables named Energy_array for:
-(can use func_One_type_prep_asc.m)
+(can use func_One_type_prep.m from single_mass_close_box)
 	•	Background heavy particles (e.g., mass = 1e6, energy = m/2)
 	•	Injected low-mass particles (e.g., mass = 1, energy = m/2)
 
