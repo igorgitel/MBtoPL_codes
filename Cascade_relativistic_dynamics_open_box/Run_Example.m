@@ -30,7 +30,7 @@ icb.folder = 'One_type';
 %% 🔷 Injected Particle Setup (Type 1)
 
 % Initial reduced momentum (gamma * beta) of injected particles
-ic.gb = 1;          % Significantly relativistic (γβ = 1)
+ic.gb = 1e7;          
 
 % Injected particle mass (equal to background for this setup)
 ic.m = icb.m;
