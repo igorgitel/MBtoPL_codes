@@ -141,13 +141,15 @@ fig1=figure('Units','centimeters','Position',FigureSize,...
 
 % Axes styling
 ax = gca;
-ax.FontName = 'Times New Roman';         % APS uses Times
+% ax.FontName = 'Times New Roman';         % APS uses Times
 ax.FontSize = 18;                          % APS recommends 8 pt font
-ax.LineWidth = 0.8;                       % Thin but visible
-ax.TickDir = 'out';
-ax.Box = 'off';                           % No top/right frame
-ax.XMinorTick = 'on';
-ax.YMinorTick = 'on';
+% ax.LineWidth = 0.8;                       % Thin but visible
+% ax.TickDir = 'out';
+% ax.Box = 'off';                           % No top/right frame
+% ax.XMinorTick = 'on';
+% ax.YMinorTick = 'on';
+ax.Box = 'on';
+ax.TickDir = 'in';  % Optional but cleaner
 
 hold on
 legendEntries = {};
@@ -230,7 +232,7 @@ xticks([1e-10 1e-7 1e-4 1e-1 1e2])
 legend(legendEntries, 'Interpreter', 'latex', ...
     'Location', 'northeast','FontSize',14);
 
-ax3 = axes('Position',[0.25 0.33 0.28 0.28]);
+ax3 = axes('Position',[0.21 0.25 0.28 0.28]);
 h=plot(time,meanEnerg);
 xlim([1 1e4])
 
@@ -238,7 +240,7 @@ h.LineWidth=1;
 ax=gca;
 % ax.XScale='log';
 ax.YScale='log';
-ax.FontSize=18;
+ax.FontSize=12;
 
 % Set custom ticks at specific values
 xticks([ 1000, 10000])
@@ -253,7 +255,6 @@ ax.TickLabelInterpreter = 'latex';
 xlabel('$t$',Interpreter='latex')
 ylabel('$\langle E_k \rangle$',Interpreter='latex')
 t=text(3.5e3,1e10,'$\langle E_k \rangle \propto \exp(t)$',Interpreter='latex');
-t.FontSize=18;
-
+t.FontSize=12;
 
 exportgraphics(fig1, 'Ultra_relativistic_self_similarities_V2.png', 'Resolution', 300)
