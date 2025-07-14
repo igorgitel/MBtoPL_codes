@@ -60,5 +60,16 @@ end
 sf=s(1:floor(time));
 clear s 
 s=sf;
+
+folder = 'saves_two_type';
+mkdir(folder);
+
+str = ['TwoType_N_' num2str(N, '%.0e') ...
+       '_beta2_' num2str(ic.beta2, '%.0e') ...
+       '_E0_' num2str(ic.p01(4), '%.0e') ...
+       '_step_' num2str(time_s.stepinc, '%.1f')];
+
+save(fullfile(folder, [str '.mat']), 's', 'ic', 'edges', 'time_s');
+
 end
 
