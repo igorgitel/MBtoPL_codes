@@ -1,19 +1,64 @@
+
 # MBtoPL_codes
 
-This repository contains MATLAB simulation tools supporting the MBtoPL project—**"From Maxwell–Boltzmann to Power Law: Energy Cascades in Relativistic Particle Distributions"**. The code is designed to explore how monoenergetic or thermal (“Maxwell–Boltzmann”) particle injections evolve into non-thermal power-law spectra through stochastic relativistic collisions.
+This repository provides the full simulation suite used in the MBtoPL study:  
+**"From Maxwell–Boltzmann to Power-Law: Energy Cascades in Relativistic Particle Distributions."**
+
+Each folder contains a distinct physical scenario that explores how relativistic collisions, injections, and cascades lead to the formation of nonthermal energy distributions from initially thermal (or monoenergetic) populations.
 
 ---
 
-## 📚 Connection to MBtoPL Paper
+## 📁 Folders and Simulation Scenarios
 
-This repository is organized by physical scenario, with each folder or script corresponding to a distinct kinetic setup:
+### `single_mass_close_box/`
+A closed system of identical particles undergoing elastic collisions. Serves as the baseline thermalization test toward a Maxwell–Jüttner distribution.
 
-- **`single_mass_close_box/`** simulates an idealized **closed-box gas** of identical particles undergoing random relativistic collisions. It models thermalization within a fixed particle pool and serves as the baseline case for equilibrium relaxation toward the Maxwell–Jüttner distribution.
+### `two_type_mass_closed_box/`
+Simulates a two-mass system with no injection. Demonstrates energy exchange dynamics between light and heavy particles through relativistic collisions.
 
-- **`TwotypeColision.m`** models **stochastic acceleration** of particles via repeated elastic collisions with a moving background. This includes both **non-relativistic and relativistic target velocities**, and tracks how initially cold particles gain energy through interactions with a prescribed population of scatterers.
+### `Asceleration_open_box/`
+Models stochastic acceleration of particles due to structured collisions in an open system. Designed to test gradual energy gain via random scattering.
 
-- **`SPI_RED_cascade.m`** explores **cascade-like energy redistribution**: a monoenergetic population is injected once into a thermal background, and energy is spread via repeated collisions. The system begins in a **mildly relativistic state** and naturally evolves toward a broader energy distribution, mimicking realistic plasma heating scenarios.
+### `Relativistic_Asceleration_open_box/`
+Tests scenarios where both colliding populations are relativistic. Demonstrates how relativistic energy drift contributes to nonthermal energy growth.
 
-- **`One_type_prep_with_energy_change.m`** implements a scenario where energy is **continuously injected into a fixed number of particles** at specified intervals. This enables controlled, local energy driving and may reproduce **nonthermal steady-state distributions**, including **kappa-like tails**, depending on the injection frequency and strength.
+### `Ultra_Relativistic_Asceleration_on_infinite_mass_open_box/`
+Simulates acceleration of finite-mass particles interacting with a background of infinite-mass scatterers. Used to isolate pure energy gain without recoil.
 
-Each module isolates a different aspect of kinetic behavior—from idealized equilibration to driven turbulence and collisional energization—allowing targeted investigation of the conditions under which a Maxwellian distribution transitions to a power law.
+### `Cascade_relativistic_dynamics_open_box/`
+Implements a monoenergetic injection into a thermal background. The resulting cascade models how injected energy spreads and leads to power-law tails.
+
+### `Injection_of_high_energy_termal_kappa_close_box/`
+Simulates repeated energy injections into a closed system. Aimed at reproducing steady-state kappa distributions through continuous driving and collisions.
+
+---
+
+## 🧠 Physics Goals
+
+- Understand under what conditions relativistic systems transition from Maxwellian to power-law distributions
+- Compare equilibrium (closed-box) vs. driven (open-box or injected) scenarios
+- Explore the role of mass ratios, injection energy, and cross-section dependence
+
+---
+
+## 📌 Dependencies
+
+All folders use shared utilities located in `Basic functions/`, including:
+- `collision.m`
+- `collision_freq.m`
+- `histlog.m`
+- `randdir_matrix.m`
+
+---
+
+## 🧪 How to Run
+
+Each folder contains a self-contained script (usually `run.m`) or a named main function. You can:
+1. `cd` into the folder
+2. Open MATLAB
+3. Run the corresponding script
+4. Use built-in plotting commands or save data for comparison to the MBtoPL figures
+
+---
+
+For questions, extensions, or collaborations, please reach out or open an issue.
