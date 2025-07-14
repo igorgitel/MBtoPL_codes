@@ -46,7 +46,7 @@ This function requires the following helper scripts in your MATLAB path:
 N = 1e5;
 
 % Initial 3-momentum magnitude of Type 1 particles
-p0 = 100;x
+p0 = 100;
 
 % Define input struct
 ic.p01   = p0;      % Magnitude of 3-momentum (used to sample initial energy)
