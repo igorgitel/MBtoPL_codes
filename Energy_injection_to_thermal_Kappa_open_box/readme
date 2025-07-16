@@ -1,5 +1,5 @@
 
-# `One_type_prep_with_energy_change.m`
+# `Energy_injection_to_thermal_Kappa_open_box.m`
 
 This MATLAB script simulates the **time evolution of a single particle species** under relativistic elastic binary collisions, with **energy injection into selected particles at regular intervals**. The total number of particles remains fixed, but the **energy distribution evolves** over time due to collisions and targeted injections.
 
