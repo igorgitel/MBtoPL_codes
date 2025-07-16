@@ -32,11 +32,11 @@ Simulates stochastic acceleration in the **ultra-relativistic limit**. A bunch o
 Implements a **single monoenergetic injection** of particles into a thermal background, designed to model energy redistribution via relativistic elastic collisions. The injected particles interact with the background, gradually transferring energy through collisions. As the system evolves, more background particles become energetically active, leading to a broadening of the energy distribution — a process analogous to a **cascade**.
 
 
-### `Injection_of_high_energy_termal_kappa_close_box/`
+### `Energy_injection_to_thermal_Kappa_open_box/`
 
 This code simulates a **open system** of colliding particles with a **fixed total number**, where energy is periodically injected into a random subset of the particles. At regular time intervals, a group of particles is selected and their energies are reassigned from a high-temperature thermal distribution.
 
-The rest of the system evolves through relativistic elastic collisions. The code tracks how the energy distribution changes over time and whether a **steady state with a nonthermal tail** (such as a kappa distribution) emerges due to this repeated energy input.
+All the system evolves through relativistic elastic collisions. The code tracks how the energy distribution changes over time and whether a **steady state with a nonthermal tail** (such as a kappa distribution, if so) emerges due to this repeated energy input.
 
 
 ---
