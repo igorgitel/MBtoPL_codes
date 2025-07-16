@@ -1,1 +1,81 @@
 
+# `One_type_prep_with_energy_change.m`
+
+This MATLAB script simulates the **time evolution of a single particle species** under relativistic elastic binary collisions, with **energy injection into selected particles at regular intervals**. The total number of particles remains fixed, but the **energy distribution evolves** over time due to collisions and targeted injections.
+
+---
+
+## 🧠 Physical Context
+
+- All particles have the same mass.
+- Collisions redistribute energy in a relativistic framework.
+- At regular time intervals, a small number of particles are selected and reassigned a fixed energy — simulating **continuous energy input** without changing particle number.
+- The simulation allows parametric study of energy injection intervals, magnitudes, and cross-section models.
+
+---
+
+## ⚙️ Simulation Parameters
+
+The script runs nested loops over the following variables:
+
+- `cs_p` — Exponent for the energy dependence of the collision cross-section  
+- `step_inj_inc` — Time interval between energy injection events  
+- `energy_inc` — Energy value assigned to injected particles  
+- `nop_energy_inc` — Number of particles updated per injection
+
+Other constants:
+
+- `ic.N` — Total number of particles (constant throughout)
+- `ic.m` — Particle rest mass
+- `ic.gb` — Initial reduced momentum (γβ = p/m) used to set initial energy
+- `max_time` — Total simulation time
+
+---
+
+## 📥 Input
+
+- Precomputed background distribution file located in:
+    Background_population/MJ_Mass_gbpartcle_number.mat
+which contains the initial energy array `En`.
+
+Generate this file using `func_One_type_prep.m` or your own function.
+
+---
+
+## 📤 Output
+
+The script produces:
+- Time-resolved histograms of the energy distribution:
+  - `data(idx).f_sim` — Normalized distribution
+  - `data(idx).bins` — Logarithmic bin centers
+  - `data(idx).kin_energy` — Mean kinetic energy at each time step
+- Optionally, comparison with the theoretical Maxwell–Jüttner distribution
+
+Results can be saved or plotted as needed by adding a save/plot section at the end of the script.
+
+---
+
+## 🔁 Main Loop Behavior
+
+1. Randomly select two particles from the pool.
+2. Assign isotropic directions.
+3. Compute collision frequency based on current energies and `cs_p`.
+4. Accept collisions stochastically.
+5. At intervals defined by `step_inj_inc`, select `nop_energy_inc` random particles and reset their energies to `energy_inc`.
+6. Sample diagnostics at intervals of `step_inc`.
+
+---
+
+## 📁 Dependencies
+
+This script depends on the following helper functions (expected in `Basic functions/`):
+
+- `collision.m` — Handles binary collision kinematics
+- `collision_freq.m` — Computes energy-dependent collision rate
+- `randdir_mat.m` — Generates isotropic direction matrix
+- `histlog.m` — Computes logarithmic histograms
+- Symbolic Math Toolbox — Used for solving the inverse MJ relation to compute temperature
+
+---
+
+
