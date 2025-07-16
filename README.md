@@ -1,7 +1,7 @@
 # MBtoPL_codes
 
 This repository provides the full simulation suite used in the MBtoPL study:  
-**"From Maxwell–Boltzmann to Power-Law: Energy Cascades in Relativistic Particle Distributions."**
+**"When does Maxwell-Boltzmann transforms to a Power-Law?"**
 
 Each folder contains a distinct physical scenario that explores how relativistic collisions, injections, and cascades lead to the formation of nonthermal energy distributions from initially thermal (or monoenergetic) populations.
 
