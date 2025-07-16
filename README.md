@@ -36,8 +36,7 @@ Implements a **single monoenergetic injection** of particles into a thermal back
 
 This code simulates a **open system** of colliding particles with a **fixed total number**, where energy is periodically injected into a random subset of the particles. At regular time intervals, a group of particles is selected and their energies are reassigned from a high-temperature thermal distribution.
 
-All the system evolves through relativistic elastic collisions. The code tracks how the energy distribution changes over time and whether a **steady state with a nonthermal tail** (such as a kappa distribution, if so) emerges due to this repeated energy input.
-
+The entire system evolves through relativistic elastic collisions. The code tracks how the energy distribution evolves over time and examines whether a steady state with a nonthermal tail—such as a kappa distribution—might emerge as a result of the continuous energy input, although this is not necessarily the case.
 
 ---
 
