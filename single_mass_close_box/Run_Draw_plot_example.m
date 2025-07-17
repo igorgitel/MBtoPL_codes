@@ -1,26 +1,46 @@
-m=1;
-gb=0.1;
-b=sqrt(gb^2/(1+gb^2));
-g=1/sqrt(1-b^2);
+clear 
+close all 
+clc 
 
-e=m*g;
-ke=e-m;
+%-----------------------------------------------
+% Simulation of a single-species relativistic gas
+% using func_One_type_prep.m
+%-----------------------------------------------
 
-N=1e6;
-step_inc=1e-3;
-[~,data,~]=func_One_type_prep(m,gb,N,step_inc)
-save(['last_run_gb_' num2str(gb,'%.1f') '_v2.mat']);
-%%
-load(['last_run_gb_' num2str(gb,'%.1f') '_v2.mat']);
+% --- Physical parameters ---
+m = 1;                  % Rest mass of the particles
+gb = 10;               % Reduced momentum (gamma * beta), dimensionless
+
+% Compute Lorentz gamma factor and corresponding energy
+b = sqrt(gb^2 / (1 + gb^2));    % Velocity as a fraction of c
+g = 1 / sqrt(1 - b^2);          % Lorentz factor
+e = m * g;                      % Total energy per particle
+ke = e - m;                     % Kinetic energy
+
+% --- Simulation parameters ---
+N = 1e6;                        % Number of particles
+step_inc = 1e-3;                % Time interval between diagnostics (snapshots)
+max_time = 2;                   % Total simulation time
+
+% --- Run the simulation ---
+% This function simulates elastic binary collisions and tracks
+% the energy distribution over time.
+% Outputs:
+% - Enb: energy array of all particles
+% - data: diagnostics structure (histograms, mean energy, etc.)
+% - ic: initial condition struct (mass, energy, particle count, etc.)
+[Enb, data, ic] = func_One_type_prep(m, gb, N, step_inc, max_time);
+%% Plotting 
+
+length(data)
+ind=[1e-3 5e-3 1.5e-2 5e-2 1e-1 3e-1 1]*1e3;  
+
+
 FigureSize = [0 0 21 13];
 DefaultFontSizeForFigure=14;
 
 fig1=figure('Units','centimeters','Position',FigureSize,...
     'DefaultAxesFontSize',DefaultFontSizeForFigure);
-length(data)
-ind=[1e-3 5e-3 1.5e-2 5e-2 1e-1 3e-1 1]*1e3;
-ic.N=1e6;
-ic.max_time=1e-2;
 
 for j=ind
     x=data(j).bins_Ek;
@@ -37,10 +57,10 @@ xlabel('$E_k=E-m$',Interpreter='latex')
 ylabel('$f(E_k)$',Interpreter='latex')
 xlim([6e-3 1e2])
 ylim([1e-6 1e0])
-line=xline(8.9125,'-',{'Initial kinetic','Energy'});
-line.LabelVerticalAlignment="bottom";
 
-text(1e1,5e-1,['t=0'],'FontSize',14);
+
+
+text(1e1,5e-1,'t=0','FontSize',14);
 
 t=text(1.5e-1,4e-5,{['$' num2str(data(ind(1)).time,"%.3f") ',\,\,' num2str(data(ind(1)).coll_num,"%.3f") '$']},'FontSize',14);
 t.FontSize=14;
@@ -91,9 +111,6 @@ DefaultFontSizeForFigure=14;
 fig2=figure('Units','centimeters','Position',FigureSize,...
     'DefaultAxesFontSize',DefaultFontSizeForFigure);
 
-ic.N=1e6;
-ic.max_time=1e-2;
-
 for j=ind
     x=data(j).bins_mu;
     y=data(j).f_sim_mu;
@@ -110,18 +127,17 @@ xlabel('$\mu$',Interpreter='latex')
 ylabel('$f(\mu)$',Interpreter='latex') 
 xlim([1e-1 1e2])
 ylim([1e-6 1e0])
-line=xline(8.9125,'-',{'Initial \gamma\beta'});
-   line.LabelVerticalAlignment="bottom";
-   text(1e1,5e-1,['t=0'],'FontSize',14);
-   text(1e0,1e-5,['t=' num2str(ind(1).*step_inc)],'FontSize',14);
-   text(5e-1,2e-5,[num2str(ind(2).*step_inc)],'FontSize',14);
-   text(3e-1,4e-5,[num2str(ind(3).*step_inc)],'FontSize',14);
-   text(3.5e-1,1.1e-4,[num2str(ind(4).*step_inc)],'FontSize',14);
-   text(2e-1,8e-5,[num2str(ind(5).*step_inc)],'FontSize',14);
-   text(1.5e-1,1.3e-4,[num2str(ind(6).*step_inc)],'FontSize',14);
-   text(2e-1,0.8e-3,[num2str(ind(7).*step_inc)],'FontSize',14);
-   x = [0.25 0.15];
-   y = [0.8 0.42];
+
+text(1e1,5e-1,'t=0','FontSize',14);
+text(1e0,1e-5,['t=' num2str(ind(1).*step_inc)],'FontSize',14);
+text(5e-1,2e-5,[num2str(ind(2).*step_inc)],'FontSize',14);
+text(3e-1,4e-5,[num2str(ind(3).*step_inc)],'FontSize',14);
+text(3.5e-1,1.1e-4,[num2str(ind(4).*step_inc)],'FontSize',14);
+text(2e-1,8e-5,[num2str(ind(5).*step_inc)],'FontSize',14);
+text(1.5e-1,1.3e-4,[num2str(ind(6).*step_inc)],'FontSize',14);
+text(2e-1,0.8e-3,[num2str(ind(7).*step_inc)],'FontSize',14);
+x = [0.25 0.15];
+y = [0.8 0.42];
 g=annotation('textarrow',x,y,'String','Maxwell-Juttner DF');
 g.FontSize=14;
 title("a)")
