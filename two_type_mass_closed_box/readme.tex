@@ -41,31 +41,7 @@ This script runs a relativistic kinetic simulation of binary collisions between 
 
 The results are saved as a .mat file in the saves/ directory with a name summarizing the parameters, e.g.:
  "saves/Mass_ratio_1836_gb_1e-03_f_param_1e+01_Nop_1000000_max_time_10000.mat"
-
-% Example Usage in MATLAB
-
-
-% Set common initial bulk velocity (dimensionless, v/c)
-gb = 1e-3;
-
-% Collision frequency scaling
-fparam = 1e1;
-
-% Define species 1 (e.g., electrons)
-ic1.m = 1;      % rest mass
-ic1.gb = gb;    % same initial velocity
-
-% Define species 2 (e.g., protons)
-ic2.m = 1836;   % rest mass ratio m_p / m_e
-ic2.gb = gb;    % same initial velocity
-
-% Simulation parameters
-N = 1e6;           % particles per species
-max_time = 1e4;    % simulation duration
-
-% Run the simulation
-[data, ic1, ic2] = par_col(ic1, ic2, N, max_time, fparam);
-
+use run.m
 
 📊 Output Details
 
