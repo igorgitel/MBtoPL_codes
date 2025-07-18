@@ -4,7 +4,7 @@ folder='saves';
 gb=1e-3;
 fparam=1e1;
 m_ratio=1836;
-max_time=2e4
+max_time=1e4;
 N=1e6;
 str=['Mass_ratio_' num2str(m_ratio)...
     '_gb_' num2str(gb,'%.0e') ...
@@ -18,7 +18,7 @@ str=['Mass_ratio_' num2str(m_ratio)...
 load(fullfile(folder,str))
 
 length(data.f_sim_1) 
-ind=[20 550 1000 3000 5000 1e4 2e4];
+ind=[20 550 1000 3000 5000 1e4];
 %%
 FigureSize = [0 0 21 13];
 DefaultFontSizeForFigure=14;
