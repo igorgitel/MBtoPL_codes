@@ -5,10 +5,10 @@ This MATLAB function simulates the time evolution of a low-mass particle populat
 	•	num_par_inj — Number of low-mass particles injected
 	•	max_time — Duration of the simulation (in simulation time units)
 	•	icb — Struct describing the background particle population:
-	•	icb.m — Rest mass
-	•	icb.e — Total energy (should be set to γ × m)
-	•	icb.N — Number of background particles
-	•	icb.gb — Initial bulk velocity (used in saved file lookup)
+	    •	icb.m — Rest mass
+	    •	icb.e — Total energy (should be set to γ × m)
+	    •	icb.N — Number of background particles
+	    •	icb.gb — Initial bulk velocity (used in saved file lookup)
 	•	gb — Initial boost (velocity) of the injected particle population
 	•	folder — Path to directory where simulation outputs will be saved
 ⚠️ Note on cs_p:
@@ -38,41 +38,4 @@ Ensure the following components are present:
 
 ⸻
 🧪 Example Usage with Background + Injected MB Initialization
-
-% 🟡 Simulation parameters
-f_param     = 1e1;     % scaling factor for collision frequency
-num_par_inj = 1e6;     % number of injected particles
-max_time    = 1e4;     % duration of simulation
-step_inc    = 1.0;     % time resolution for saving snapshots
-
-% 🧊 STEP 1: Prepare background and save
-icb.m  = 1e6;
-icb.N  = 1e6;
-icb.gb = 1e-3;
-save_folder = 'saves1';
-
-[Enb, ~, icb] = func_One_type_prep(icb.m, icb.gb, icb.N, save_folder);
-
-% 🔥 STEP 2: Run the simulation — injection is monoenergetic inside the function
-f_param     = 1e1;
-num_par_inj = 1e6;
-max_time    = 1e4;
-inj_gb      = 0.1;      % injected particle boost (delta function)
-folder      = 'saves_v4';
-
-[data, En] = func_asc_single_injection_Mat_TS(...
-    f_param, ...
-    num_par_inj, ...
-    max_time, ...
-    icb, ...
-    inj_gb, ...
-    folder ...
-);
-
-⸻
-
-💾 Output File
-
-Results are saved automatically in the folder saves_v4/ as a .mat file, named based on the simulation parameters, e.g.:
-
-saves_v4/Single_injection_number_of_particles_injected_1.0e+06_cs_power_0_maximum_time_steps_1.0e+04_relative_frequancy_parameter_1.0e+01_step_inc_1.00.mat
+see Run.m and LoadDraw.m

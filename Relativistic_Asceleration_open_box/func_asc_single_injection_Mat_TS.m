@@ -1,23 +1,24 @@
-function [data,En]=func_asc_single_injection_Mat_TS(f_param,num_par_inj,max_time,icb,gb,folder)
+function [data,En]=func_asc_single_injection_Mat_TS( ...
+    ic,icb,f_param,num_par_inj,max_time,step_inc,data_save_folder)
 addpath('Basic functions/')
 %% background load
-% m=icb.m;
-% N=icb.N;
-% savebgb=icb.gb;
-% b=sqrt(icb.gb^2/(1+icb.gb^2));
-% g=1/sqrt(1-b^2);
-% eb=icb.m*g;
-% BKE=eb-icb.m;
 
 str=['One_type_mass_' num2str(icb.m,'%1.0e')...
     '_initial_gb_' num2str(icb.gb,'%1.0e')...
     '_particle_number_' num2str(icb.N,'%1.0e')];
-bgb=icb.gb;
-load(fullfile('saves1',[str '.mat']),"Enb","icb")
-icb.gb=bgb;
-%% cheking the background dist (and edges definition)
+
+load(fullfile('saves_one_type',[str '.mat']),"Energy_array")
+Enb=Energy_array; % assign for background 
+% add properties
+icb.b=sqrt(icb.gb^2/(1+icb.gb^2));
+icb.g=1/sqrt(1-icb.b^2);
+icb.e=icb.m*icb.g;
+icb.ke = icb.e - icb.m;
+clear Energy_array
+
+%edges definition
 edges=10.^(-16:0.1:16);
-% [Ekb,fs] = histlog(Enb-icb.m,edges);
+%% The background dist
 
 MJDF=@(x,m,T) 1/(m.^2.*T.*besselk(2,m/T,1)).*(x+m)...
     .*(sqrt((x+m).^2-m.^2)).*exp(-x/T); % MJ func
@@ -27,20 +28,7 @@ temp=3/2*(icb.e-icb.m);
 T = double(vpasolve(3*x+...
     icb.m*besselk(1,icb.m/x)/besselk(2,icb.m/x)==icb.e,x,temp));
 
-% % clear x
-% figure
-%     plot(Ekb,fs./trapz(Ekb,fs),'rx')
-%     hold on 
-%     plot(Ekb,MJDF(Ekb,icb.m,T))
-%     ax=gca;
-%     ax.XScale = 'log';
-%     ax.YScale = 'log';
-%     xlim([1e-4 1e2])
-%     ylim([1e-3 1e2])
-% % [Enb,~,icb]=func_One_type_prep(m,icb.gb,N)
-% clear ic En Ekb fs str
 %% initial condition
-ic.gb=gb;
 ic.b=sqrt(ic.gb^2/(1+ic.gb^2));
 ic.g=1/sqrt(1-ic.b^2);
 
@@ -57,11 +45,13 @@ num_par=num_par_inj;
 
 %% time
 t=0;
-step_inc=0.1; step=step_inc;  idx=1;
-show_step_inc=1e2; show_step=show_step_inc;
+step=step_inc;  idx=1;
+show_step_inc=1; show_step=show_step_inc;
+
 %% maximal frequancy and cross section dependencies
 f_max=0;
 cs_p=0;
+
 %% Random diraction
 N_dir=1e5;
 dir_mat = randdir_matrix(N_dir);
@@ -107,6 +97,7 @@ while t<max_time
     end
     if t>step
         data.kin_energy(idx)=mean(En-ic.m);
+        data.std(idx)=std(En-ic.m);
         [data.bins,data.f_sim(idx,:),data.f_sim_50(idx,:),data.f_sim_100(idx,:)]...
             = low_err_histlog(En-ic.m,edges);
 
@@ -138,8 +129,7 @@ while t<max_time
 end
 data.Teo=MJDF(data.bins,ic.m,T);
 %%
-% folder='hight_resolution_sim';
-mkdir(folder)
+mkdir(data_save_folder)
 
 str=['mass_Background_' num2str(icb.m,'%1.0e')...
     '_Single_injection_f_param_' num2str(f_param,'%1.0e')...
@@ -149,6 +139,10 @@ str=['mass_Background_' num2str(icb.m,'%1.0e')...
     '_bgb_' num2str(icb.gb,'%1.0e')...
     '_gb_' num2str(ic.gb,'%1.0e')];
 
-save(fullfile(folder,[str '.mat']),'-v7.3');
+save(fullfile(data_save_folder,[str '.mat']),'-v7.3', ...
+    'ic','icb', ...
+    'data','En', ...
+    'max_time','step_inc', ...
+    'cs_p');
 % anima_s(data,str,folder);
 end
