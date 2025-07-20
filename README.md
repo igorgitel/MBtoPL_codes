@@ -16,11 +16,8 @@ A closed system of identical particles undergoing elastic collisions. Serves as 
 ### `two_type_mass_closed_box/`
 Simulates a two-mass system with no injection. Demonstrates energy exchange dynamics between light and heavy particles through relativistic collisions.
 
-### `Asceleration_open_box/`
-Simulates stochastic acceleration of particles in an open system. A single bunch of low-mass particles is injected into a static background of very high-mass particles. The background particles do not evolve — they serve as an energy reservoir with fixed velocities and directions. The code tracks how the low-mass particles gain energy through repeated elastic collisions with this background. This scenario is designed to model non-relativistic energy exchange and tests the distribution function of this low-mass particles.
-
 ### `Relativistic_Asceleration_open_box/`
-Simulates stochastic acceleration of particles in an open system, similar to the `Asceleration_open_box/` setup but using fully relativistic kinematics. A single bunch of low-mass particles is injected into a background of static, high-mass particles that do not evolve. These background particles act as a fixed-energy reservoir, and only the low-mass population is tracked. The code models how energy is transferred to the low-mass particles through repeated relativistic elastic collisions, allowing analysis of how relativistic energy drift shapes their distribution function.
+Simulates stochastic acceleration of particles in an open system using fully relativistic kinematics. A single bunch of low-mass particles is injected into a background of static, high-mass particles that do not evolve. These background particles act as a fixed-energy reservoir, and only the low-mass population is tracked. The code models how energy is transferred to the low-mass particles through repeated relativistic elastic collisions, allowing analysis of how relativistic energy drift shapes their distribution function.
 
 
 ### `Ultra_Relativistic_Asceleration_on_infinite_mass_open_box/`
