@@ -1,41 +1,46 @@
-This MATLAB function simulates the time evolution of a low-mass particle population injected into a thermal bath of high-mass background particles. It models elastic binary collisions and tracks the injected particle distribution over time, allowing analysis of thermalization and kinetic behavior in a two-component system.
+`func_asc_single_injection_Mat_TS.m`
 
-📥 Inputs
-	•	f_param — Scaling factor for the collision frequency (dimensionless)
-	•	num_par_inj — Number of low-mass particles injected
-	•	max_time — Duration of the simulation (in simulation time units)
-	•	icb — Struct describing the background particle population:
-	    •	icb.m — Rest mass
-	    •	icb.e — Total energy (should be set to γ × m)
-	    •	icb.N — Number of background particles
-	    •	icb.gb — Initial bulk velocity (used in saved file lookup)
-	•	gb — Initial boost (velocity) of the injected particle population
-	•	folder — Path to directory where simulation outputs will be saved
-⚠️ Note on cs_p:
-Although cs_p (the power-law exponent for energy-dependent cross-section) is used in other functions, it is hard-coded inside this function as cs_p = 0.
-To change the cross-section behavior, you must edit the line directly in the function:
-cs_p = 0;  % Change this manually to e.g. cs_p = 1.5
+This MATLAB function simulates the **evolution of a monoenergetic low-mass particle population** injected into a thermal background of high-mass particles. The simulation is based on relativistic elastic collisions and tracks how the energy distribution of the injected particles evolves over time. This setup is designed to test **non-equilibrium thermalization** and investigate conditions under which **power-law tails** might develop.
 
-📤 Outputs
-	•	data — Struct containing diagnostics at each time step:
-		•	f_sim — Normalized histogram of energy distribution
-		•	bins — Logarithmic bin centers
-		•	kin_energy — Mean kinetic energy of injected particles
-		•	time — Timestamp of each snapshot
-	•	En — Final energy array of injected particles
+---
 
-⸻
+## 📥 Inputs
 
-Ensure the following components are present:
-	•	Folder Basic functions/:
-	•	randdir_matrix.m — Generates isotropic random directions
-	•	collision.m — Handles elastic binary collisions
-	•	frequancy.m — Computes collision frequency
-	•	histlog.m — Bins energies on a log scale
-	•	Folder saves_one_type/:
-	•	Must contain a .mat file produced by func_One_type_prep:
-	•	For background particles only (e.g., mass = 1e6, energy = γ × m, with γ from icb.gb)
+- `ic`: Struct with properties of the **injected particles**:
+  - `ic.m`: mass of injected particles
+  - `ic.gb`: reduced momentum (gamma * beta)
+- `icb`: Struct with properties of the **background particles**:
+  - `icb.m`: mass of background particles
+  - `icb.gb`: reduced momentum (used to identify precomputed thermal data)
+  - `icb.N`: number of background particles
+- `f_param`: Relative scaling factor for collision frequency
+- `num_par_inj`: Number of injected particles
+- `max_time`: Total simulation time
+- `step_inc`: Time step between recorded diagnostics
+- `data_save_folder`: Path to save the output `.mat` file
 
-⸻
+---
+
+## 📤 Outputs
+
+- `data`: Struct with time evolution of the injected particle population:
+  - `data.f_sim`: Energy distribution at each time step
+  - `data.kin_energy`: Mean kinetic energy over time
+  - `data.std`: Standard deviation of kinetic energy
+  - `data.time`: Simulation time stamps
+  - `data.coll_num_pp`: Number of collisions per particle per step
+  - `data.Teo`: Reference Maxwell–Jüttner distribution
+- `En`: Final energy array of the injected particles
+
+---
+
+## 📁 Notes
+
+- The background distribution is loaded from a precomputed file in `saves_one_type/`.
+- The energy distribution is computed using `low_err_histlog`, which returns symmetric error bars.
+- The simulation assumes **single injection only** — no new particles are added during evolution.
+- Random direction sampling is refreshed every time step.
+
+---
 🧪 Example Usage with Background + Injected MB Initialization
 see Run.m and LoadDraw.m
