@@ -58,6 +58,7 @@ dir_mat = randdir_matrix(N_dir);
 ind_dir = 1;
 %% data preparation
 trys=0; coll_num=0; temp1=0; temp2=0;
+KE_condition=ic.ke;
 % data = struct('f_sim',...
     % 'bins',...
     % 'kin_energy');
@@ -66,7 +67,8 @@ data.kin_energy=zeros(max_time/step_inc,1);
 data.time=zeros(max_time/step_inc,1);
 %% Collision loop
 
-while t<max_time
+while t < max_time && KE_condition <= icb.ke
+  
     trys=trys+1;
     % index selection
     id1=randi(num_par);
@@ -97,6 +99,7 @@ while t<max_time
     end
     if t>step
         data.kin_energy(idx)=mean(En-ic.m);
+        KE_condition=data.kin_energy(idx);
         data.std(idx)=std(En-ic.m);
         [data.bins,data.f_sim(idx,:),data.f_sim_50(idx,:),data.f_sim_100(idx,:)]...
             = low_err_histlog(En-ic.m,edges);
@@ -127,7 +130,18 @@ while t<max_time
 
 
 end
+% add theoretical data 
 data.Teo=MJDF(data.bins,ic.m,T);
+% adjust the final structure if needed 
+final_idx = idx - 1;
+data.kin_energy = data.kin_energy(1:final_idx);
+data.std = data.std(1:final_idx);
+data.f_sim =  data.f_sim(1:final_idx,:);
+data.f_sim_50 =  data.f_sim_50(1:final_idx,:);
+data.f_sim_100 =  data.f_sim_100(1:final_idx,:);
+data.time = data.time(1:final_idx);
+data.coll_num_pp = data.coll_num_pp(1:final_idx);
+
 %%
 mkdir(data_save_folder)
 

@@ -3,12 +3,12 @@ close all
 clc
 
 % background (high-mass thermal bath)
-icb.m  = 1e10;          % 🪨 Background particle mass
+icb.m  = 1e8;          % 🪨 Background particle mass
 icb.N  = 1e6;           % 🔢 Number of background particles
-icb.gb = 1e-3;          % 🌀 Initial reduced momentum (gamma * beta)
+icb.gb = 1e-1;          % 🌀 Initial reduced momentum (gamma * beta)
 
 % The injected particles are initialized with a delta-function distribution in energy
-ic.gb = 1e-3;                                % 🚀 Reduced momentum of injected particles
+ic.gb = 1e-1;                                % 🚀 Reduced momentum of injected particles
 ic.b  = sqrt(ic.gb^2 / (1 + ic.gb^2));       % 🔄 Velocity derived from gb
 ic.g  = 1 / sqrt(1 - ic.b^2);                % 🔁 Lorentz gamma factor
 
@@ -46,8 +46,8 @@ fig = figure('Units', 'centimeters', ...
 
 % --- Plot control parameters ---
 num_of_plots = 8;                          % 🎞️ Number of snapshots to display
-len = max(size(data.f_sim));              % 📏 Total number of injections (frames)
-ind = [1 floor(len/num_of_plots : len/num_of_plots : len)];  % 📍 Selected indices to plot
+len = max(size(data.time));              % 📏 Total number of injections (frames)
+ind = [1 floor(len/num_of_plots : len/num_of_plots : len) len];  % 📍 Selected indices to plot
 
 % --- Build the constant injection steady-state distribution ---
 % Each snapshot in data.f_sim represents the evolving distribution of 

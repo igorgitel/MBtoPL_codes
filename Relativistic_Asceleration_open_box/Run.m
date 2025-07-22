@@ -3,7 +3,7 @@ clc
 close all
 %% 🧊 STEP 1: Prepare background (high-mass thermal bath)
 
-icb.m  = 1e6;          % 🪨 Background particle mass
+icb.m  = 1e8;          % 🪨 Background particle mass
 icb.N  = 1e6;           % 🔢 Number of background particles
 icb.gb = 1e-1;          % 🌀 Initial reduced momentum (gamma * beta)
 
