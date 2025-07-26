@@ -132,7 +132,7 @@ for cs_p=[0] % cross-section power-law exponent (sigma = E^(-cs_p))
                         temp1=trys;
                         temp2=coll_num;
                         step=step+step_inc;
-
+                        idx =idx+1;
                         % regenerate direction matrix
                         N_dir=1e6;
                         Mat_dir=randdir_matrix(N_dir);
