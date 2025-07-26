@@ -5,13 +5,13 @@ addpath('Basic functions/')
 %% Initial conditions
 icb.g=sqrt(icb.gb^2+1);
 icb.e=icb.m*icb.g;
-icb.ek=icb.e-icb.m;
+icb.ke=icb.e-icb.m;
 
 % Energy array
 ic.b=sqrt(ic.gb^2/(1+ic.gb^2));
 ic.g=sqrt(ic.gb^2+1);
 ic.e=ic.m*ic.g;
-ic.ek=ic.e-ic.m;
+ic.ke=ic.e-ic.m;
 
 En=zeros(1,10*maxnumofpar); % array def
 En(1:numofpar)=ic.e*ones(1,numofpar); % The injection
@@ -22,8 +22,25 @@ numofpar_initially=numofpar; % for saving
 
 DF_factor=1; % factor for the distribtution fanction after reduction
 
-% background
-[Enb,~,~]=func_One_type_prep(icb.m,icb.gb,icb.N,icb.folder);
+% === Define folder where the background particle distribution is saved ===
+icb.folder = 'One_type';  % Folder name for saving or loading background data
+
+% === Generate a unique filename for the background file based on icb parameters ===
+str = ['One_type_mass_' num2str(icb.m, '%1.0e') ...
+       '_initial_gb_' num2str(icb.gb, '%1.0e') ...
+       '_particle_number_' num2str(icb.N, '%1.0e')];
+
+% === Full path to the .mat file to be loaded or saved ===
+background_file_path = fullfile(icb.folder, [str '.mat']);
+
+% === Check if the file already exists ===
+if exist(background_file_path, 'file') == 2
+    % If file exists, load the background energy array
+    load(background_file_path)  % loads variables like Enb, data, ic (if saved)
+else
+    % If not, generate the background energy distribution and save it
+    [Enb, ~, ~] = func_One_type_prep(icb.m, icb.gb, icb.N, icb.folder);
+end
 drawnow
 
 % time
@@ -63,8 +80,8 @@ ind_dir=1;
 
 %%
 numberofcollision=0;
-
-while t<max_time
+kin_energ=ic.ke;
+while t<max_time && kin_energ>10*icb.ke
     id1 = randi(numofpar);
     id2 = randi(icb.N);
 
@@ -161,13 +178,17 @@ while t<max_time
         step=step+step_inc;
     end
 end
-%%
-% figure
-% histogram(erff,10.^(-16:0.1:1));
-% ax=gca;
-% ax.XScale='log';
-% ax.YScale='log';
-% title(num2str(mean(erff),'%1.1e'))
+%% trim
+data.fsim       = data.fsim(1:idx, :);
+data.fsim10     = data.fsim10(1:idx, :);
+data.fsim50     = data.fsim50(1:idx, :);
+data.fsim100    = data.fsim100(1:idx, :);
+data.EffParNum  = data.EffParNum(1:idx);
+data.time       = data.time(1:idx);
+data.DF_factor  = data.DF_factor(1:idx);
+data.kin_energy = data.kin_energy(1:idx);
+
+
 %%
 str=['init_gb_' num2str(ic.gb,'%1.0e') ...
     '_par_num_' num2str(numofpar_initially,'%1.0e') ...

@@ -20,7 +20,7 @@ clear x
 %% time
 t=0;
 step_inc=1; step=step_inc;  idx=1;
-max_time=5e2;
+max_time=1e2;
 %% maximal frequancy and cross section dependencies
 f_max=0;
 cs_p=0;

@@ -1,3 +1,7 @@
+clear 
+close 
+clc
+
 % Add path to folder containing helper functions
 addpath('Basic functions/')
 
@@ -7,7 +11,7 @@ addpath('Basic functions/')
 icb.m = 1;
 
 % Initial reduced momentum (gamma * beta) of background particles
-icb.gb = 1e-4;
+icb.gb = 1e-2;
 
 % Number of background particles
 icb.N = 1e5;
@@ -21,11 +25,6 @@ icb.e = icb.m * icb.g;
 % Kinetic energy per particle: KE = E - m
 icb.ke = icb.e - icb.m;
 
-% Folder where the background particle distribution will be saved
-icb.folder = 'One_type';
-
-% Generate and save background energy distribution using func_One_type_prep
-[Enb, ~, ~] = func_One_type_prep(icb.m, icb.gb, icb.N, icb.folder);
 
 %% 🔷 Injected Particle Setup (Type 1)
 
@@ -53,4 +52,9 @@ tic
 toc
 
 %% 📊 Optional: Animate spectral evolution
-% evol_Mat_anim(data, str, folder, ic, icb)
+folder='Animation_mp4';
+
+if ~exist(folder, 'dir')
+    mkdir(folder);
+end
+evol_Mat_anim(data, str, folder, ic, icb)
