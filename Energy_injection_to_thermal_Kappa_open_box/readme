@@ -2,7 +2,7 @@
 
 # 🔥 `Energy_injection_no_cooling.m`
 
-This MATLAB simulation models **repeated energy injection** into a low-mass particle population embedded in a fixed thermal background, without allowing for cooling or particle escape. It is designed to test how constant driving influences the energy distribution of particles, with the goal of exploring **nonthermal steady states**, such as **kappa distributions**.
+This MATLAB simulation models **repeated energy injection** into a low-energy particle population embedded in a fixed thermal background, without allowing for cooling or particle escape. It is designed to test how constant driving influences the energy distribution of particles, with the goal of exploring **nonthermal distributions**, such as **kappa distributions**.
 
 ---
 
