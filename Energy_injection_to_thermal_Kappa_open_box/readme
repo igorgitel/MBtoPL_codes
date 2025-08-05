@@ -1,4 +1,82 @@
 
+
+# 🔥 `Energy_injection_no_cooling.m`
+
+This MATLAB simulation models **repeated energy injection** into a low-mass particle population embedded in a fixed thermal background, without allowing for cooling or particle escape. It is designed to test how constant driving influences the energy distribution of particles, with the goal of exploring **nonthermal steady states**, such as **kappa distributions**.
+
+---
+
+## 📋 Prerequisites
+
+Before using this script, the user **must generate an initial particle distribution** using:
+
+```matlab
+[Enb, ~, ic] = func_One_type_prep(mass, gb, N, step_inc, max_time);
+```
+
+This prepares a Maxwell–Jüttner equilibrium for background particles and stores it for use in injection simulations.
+
+---
+
+## 🚀 Main Script: `Single_run.m`
+
+This script performs a **single energy injection run** with the following steps:
+1. Loads the initial distribution saved from `func_One_type_prep`.
+2. Repeatedly injects energy into a random subset of particles.
+3. Evolves the population under elastic collisions.
+4. Tracks the distribution function and outputs results.
+
+📎 Ensure you set parameters such as:
+- `ic.m`, `ic.gb`: particle properties
+- `f_param`: collision frequency scaling
+- `injection_energy`: how much energy is injected per step
+- `num_cycles`: how many injection-relaxation steps are simulated
+
+---
+
+## 🧵 Parallel Execution: `Paralel_computation.m`
+
+This script allows running **multiple injection scenarios in parallel**, using different random seeds or parameter combinations.
+
+🔧 Requirements:
+- MATLAB Parallel Computing Toolbox
+- Compatible initial condition files prepared via `func_One_type_prep`
+
+You can adjust loop counters or `parfor` ranges to explore large parameter spaces efficiently.
+
+---
+
+## 📁 Output
+
+Each run generates a `.mat` file in the specified folder, which includes:
+- Energy distribution per time step
+- Kinetic energy evolution
+- Binned histograms for further analysis or plotting
+
+---
+
+## 🧪 Example Initialization (Before Any Run)
+
+```matlab
+% Step 1: Create and save the initial thermal background
+m = 1;
+gb = 0.01;
+N = 1e6;
+step_inc = 0.1;
+max_time = 5;
+
+[Enb, ~, ic] = func_One_type_prep(m, gb, N, step_inc, max_time);
+```
+
+Now you can run `Single_run.m` or `Paralel_computation.m` using this initialized `ic`.
+
+---
+
+
+
+
+
+
 # `Energy_injection_to_thermal_Kappa_open_box.m`
 
 This MATLAB script simulates the **time evolution of a single particle species** under relativistic elastic binary collisions, with **energy injection into selected particles at regular intervals**. The total number of particles remains fixed, but the **energy distribution evolves** over time due to collisions and targeted injections.
