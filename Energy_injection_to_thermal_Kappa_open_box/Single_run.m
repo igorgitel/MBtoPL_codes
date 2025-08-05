@@ -7,9 +7,9 @@ addpath('Basic functions/')           % Add folder with custom functions to the 
 max_time = 2e2;                       % Total simulation time
 cs_p = 0;                             % Power-law index for the cross section: sigma ∝ E^(-cs_p)
 
-for time_between_injections = 10.^(-3:1)% Time interval between energy injections
+time_between_injections = 1           % Time interval between energy injections
 energy_inc = 1;                       % Energy injected per event
-num_of_inj_particles = 1;            % Number of particles to receive energy per injection
+num_of_inj_particles = 1;             % Number of particles to receive energy per injection
 
 Heat_rate = energy_inc * num_of_inj_particles / time_between_injections;
 % disp(['Heating rate = ' num2str(Heat_rate) ' energy units per time unit'])
@@ -68,6 +68,6 @@ data = Energy_injection_no_cooling(ic, ...
 %        '_cs_p_' num2str(cs_p)];
 
 % anima_s(data,ic,Heat_rate,str,save_folder)
-end
+
 
 anima_bach_render
